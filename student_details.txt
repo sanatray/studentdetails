@@ -1,0 +1,75 @@
+#%RAML 1.0
+title: studentDetails
+description: arrange student RollNO wise
+types:
+  studentDataType: !include /exchange_modules/dbe1ef15-a544-4405-8882-2cfb223d11a8/universitylibrary/1.0.1/studentDataType/studentDataType.raml
+traits:
+  clint-id-required:
+    headers:
+      clint_id:
+        type: string
+        required: true
+      clint_secret:
+        type: string
+        required: true
+
+/Student:
+  get:
+    is: [clint-id-required]
+    description: retrive the university information
+    queryParameters:
+      destination:
+        type: string
+        required: false
+        enum:
+          - IITM
+          - IITD
+          - IISC
+    responses:
+      200:
+        body:
+          application/json:
+            type: studentDataType
+            examples:
+              output: !include /exchange_modules/dbe1ef15-a544-4405-8882-2cfb223d11a8/universitylibrary/1.0.1/studentExample/studentExample.raml
+            
+  post:
+    body:
+      application/json:
+        type: studentDataType
+        examples:
+          input: !include /Example/studentDetailsNoExample.raml
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              output: student RollNo (added but not really) 
+/studentRollNo:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: studentDataType
+            examples:
+              output: !include /Example/studentDetailsExample.raml
+  delete:
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              output: student RollNo deleted (but not really)
+  put:
+    body:
+      application/json:
+        type: studentDataType
+        examples:
+          input: !include /Example/studentDetailsNoExample.raml
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              output: student RollNo (added but not really)
